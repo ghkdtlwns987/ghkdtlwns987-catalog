@@ -20,7 +20,7 @@ public class ResponseCatalogDto
     private Integer unitPrice;
 
 
-    public ResponseCatalogDto fromEntity(Catalog catalog){
+    public static ResponseCatalogDto fromEntity(Catalog catalog){
         return new ResponseCatalogDto(
                 catalog.getProductId(),
                 catalog.getProductName(),
