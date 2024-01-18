@@ -4,13 +4,11 @@ import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -83,8 +81,19 @@ public class CatalogRepositoryTest {
         assertThat(catalogList).hasSize(3);
 
         // Check individual catalogs
-        assertThat(catalogList.get(0)).isEqualToComparingFieldByField(catalog1);
-        assertThat(catalogList.get(1)).isEqualToComparingFieldByField(catalog2);
-        assertThat(catalogList.get(2)).isEqualToComparingFieldByField(catalog3);
+        assertThat(catalogList.get(0).getProductId()).isEqualTo(PRODUCT_ID_1);
+        assertThat(catalogList.get(0).getProductName()).isEqualTo(PRODUCT_NAME);
+        assertThat(catalogList.get(0).getStock()).isEqualTo(STOCK);
+        assertThat(catalogList.get(0).getUnitPrice()).isEqualTo(UNITPRICE);
+
+        assertThat(catalogList.get(1).getProductId()).isEqualTo(PRODUCT_ID_2);
+        assertThat(catalogList.get(1).getProductName()).isEqualTo(PRODUCT_NAME);
+        assertThat(catalogList.get(1).getStock()).isEqualTo(STOCK);
+        assertThat(catalogList.get(1).getUnitPrice()).isEqualTo(UNITPRICE);
+
+        assertThat(catalogList.get(2).getProductId()).isEqualTo(PRODUCT_ID_3);
+        assertThat(catalogList.get(2).getProductName()).isEqualTo(PRODUCT_NAME);
+        assertThat(catalogList.get(2).getStock()).isEqualTo(STOCK);
+        assertThat(catalogList.get(2).getUnitPrice()).isEqualTo(UNITPRICE);
     }
 }
