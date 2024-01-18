@@ -21,7 +21,7 @@ public class CatalogsController {
     private final CatalogService catalogService;
 
     @GetMapping("/catalogs")
-    public ResponseEntity<Iterable<ResponseCatalogDto>> getCategories(){
+    public ResponseEntity<List<ResponseCatalogDto>> getCategories(){
         List<ResponseCatalogDto> result = catalogService.getAllCatalogs();
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
