@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CatalogServiceImpl implements CatalogService {
     private final CatalogRepository catalogRepository;
+
     @Override
     public List<ResponseCatalogDto> getAllCatalogs() {
         Iterable<Catalog> catalogIterable = catalogRepository.findAll();
