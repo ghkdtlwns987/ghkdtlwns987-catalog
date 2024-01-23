@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @DataJpaTest
 public class CatalogRepositoryTest {
@@ -77,23 +78,14 @@ public class CatalogRepositoryTest {
         List<Catalog> catalogList = new ArrayList<>();
         catalogs.forEach(catalogList::add);
 
-        // Check the size of the retrieved catalogs
-        assertThat(catalogList).hasSize(3);
-
-        // Check individual catalogs
-        assertThat(catalogList.get(0).getProductId()).isEqualTo(PRODUCT_ID_1);
-        assertThat(catalogList.get(0).getProductName()).isEqualTo(PRODUCT_NAME);
-        assertThat(catalogList.get(0).getStock()).isEqualTo(STOCK);
-        assertThat(catalogList.get(0).getUnitPrice()).isEqualTo(UNITPRICE);
-
-        assertThat(catalogList.get(1).getProductId()).isEqualTo(PRODUCT_ID_2);
-        assertThat(catalogList.get(1).getProductName()).isEqualTo(PRODUCT_NAME);
-        assertThat(catalogList.get(1).getStock()).isEqualTo(STOCK);
-        assertThat(catalogList.get(1).getUnitPrice()).isEqualTo(UNITPRICE);
-
-        assertThat(catalogList.get(2).getProductId()).isEqualTo(PRODUCT_ID_3);
-        assertThat(catalogList.get(2).getProductName()).isEqualTo(PRODUCT_NAME);
-        assertThat(catalogList.get(2).getStock()).isEqualTo(STOCK);
-        assertThat(catalogList.get(2).getUnitPrice()).isEqualTo(UNITPRICE);
+        assertThat(catalogList)
+                .isNotEmpty()
+                .hasSize(3)
+                .extracting(Catalog::getProductId, Catalog::getProductName, Catalog::getStock, Catalog::getUnitPrice)
+                .containsExactly(
+                        tuple(PRODUCT_ID_1, PRODUCT_NAME, STOCK, UNITPRICE),
+                        tuple(PRODUCT_ID_2, PRODUCT_NAME, STOCK, UNITPRICE),
+                        tuple(PRODUCT_ID_3, PRODUCT_NAME, STOCK, UNITPRICE)
+                );
     }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,24 +92,14 @@ public class CataLogServiceTest {
         // Calling the service method
         List<ResponseCatalogDto> response = catalogService.getAllCatalogs();
 
-        // Asserting the result
-        assertThat(response).isNotEmpty();
-        assertThat(response).hasSize(3);
-
-        assertThat(response.get(0).getProductId()).isEqualTo(PRODUCT_ID_1);
-        assertThat(response.get(0).getProductName()).isEqualTo(PRODUCT_NAME);
-        assertThat(response.get(0).getStock()).isEqualTo(QTY);
-        assertThat(response.get(0).getUnitPrice()).isEqualTo(UNITPRICE);
-
-        assertThat(response.get(1).getProductId()).isEqualTo(PRODUCT_ID_2);
-        assertThat(response.get(1).getProductName()).isEqualTo(PRODUCT_NAME);
-        assertThat(response.get(1).getStock()).isEqualTo(QTY);
-        assertThat(response.get(1).getUnitPrice()).isEqualTo(UNITPRICE);
-
-        assertThat(response.get(2).getProductId()).isEqualTo(PRODUCT_ID_3);
-        assertThat(response.get(2).getProductName()).isEqualTo(PRODUCT_NAME);
-        assertThat(response.get(2).getStock()).isEqualTo(QTY);
-        assertThat(response.get(2).getUnitPrice()).isEqualTo(UNITPRICE);
-
+        assertThat(response)
+                .isNotEmpty()
+                .hasSize(3)
+                .extracting(ResponseCatalogDto::getProductId, ResponseCatalogDto::getProductName, ResponseCatalogDto::getStock, ResponseCatalogDto::getUnitPrice)
+                .containsExactly(
+                        tuple(PRODUCT_ID_1, PRODUCT_NAME, QTY, UNITPRICE),
+                        tuple(PRODUCT_ID_2, PRODUCT_NAME, QTY, UNITPRICE),
+                        tuple(PRODUCT_ID_3, PRODUCT_NAME, QTY, UNITPRICE)
+                );
     }
 }
