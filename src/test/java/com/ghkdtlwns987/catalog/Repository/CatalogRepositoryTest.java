@@ -57,7 +57,7 @@ public class CatalogRepositoryTest {
                 .build();
     }
     @Test
-    void 상품_저장_테스트() throws Exception{
+    void 상품_저장_테스트(){
         Catalog savedCatalog = catalogRepository.save(catalog1);
 
         assertThat(savedCatalog.getId()).isNotNull();
@@ -68,7 +68,7 @@ public class CatalogRepositoryTest {
     }
 
     @Test
-    void 상품_전체_불러오기_테스트() throws Exception{
+    void 상품_전체_불러오기_테스트(){
         catalogRepository.save(catalog1);
         catalogRepository.save(catalog2);
         catalogRepository.save(catalog3);
