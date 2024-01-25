@@ -1,12 +1,3 @@
-SERVER_PORT : 8001
-AUTHENTICATION: http://localhost:9001/authentication
-AUTHORIZATION: http://localhost:9001/authorization
-MEMBER_URL: http://localhost:8000/api/v1/member
-
-server:
-  port: ${SERVER_PORT}
-
-
 spring:
   h2:
     console:
@@ -30,9 +21,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
-    defer-datasource-initialization: true
-
+    defer-datasource-initialization: off
   sql:
     init:
-      platform: dev
-
+      platform: test
