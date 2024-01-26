@@ -2,6 +2,8 @@ package com.ghkdtlwns987.catalog.Controller;
 
 import com.ghkdtlwns987.catalog.Dto.RequestCatalogDto;
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
+import com.ghkdtlwns987.catalog.Global.ResultCode;
+import com.ghkdtlwns987.catalog.Global.ResultResponse;
 import com.ghkdtlwns987.catalog.Service.Inter.CommandCatalogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +20,9 @@ public class CommandCatalogController {
     private final CommandCatalogService commandCatalogService;
 
     @PostMapping("/catalogs")
-    public ResponseEntity<ResponseCatalogDto> createCatalog(@RequestBody RequestCatalogDto request) throws Exception{
+    public ResponseEntity<ResultResponse> createCatalog(@RequestBody RequestCatalogDto request) throws Exception{
         ResponseCatalogDto result = commandCatalogService.createCatalog(request);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        ResultResponse resultResponse = ResultResponse.of(ResultCode.REGISTER_CATALOG_REQUEST_SUCCESS, result);
+        return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
     }
 }

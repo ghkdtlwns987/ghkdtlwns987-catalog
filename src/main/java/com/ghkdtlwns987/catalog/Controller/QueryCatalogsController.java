@@ -25,14 +25,14 @@ public class QueryCatalogsController {
         return ResponseEntity.status(HttpStatus.OK).body(resultListResponse);
     }
 
-    @PostMapping("/catalogs/{productId}")
-    public ResponseEntity<ResultResponse> getCategoriesByProductId(@PathVariable String productId){
+    @GetMapping("/catalogs/search")
+    public ResponseEntity<ResultResponse> getCategoriesByProductId(@RequestBody String productId){
         ResponseCatalogDto result = queryCatalogService.getCatalogByProductId(productId);
         ResultResponse resultResponse = ResultResponse.of(ResultCode.GET_CATALOG_REQUEST_SUCCESS, result);
         return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
     }
 
-    @GetMapping("/catalogs/{productName}")
+    @GetMapping("/catalogs/search/{productName}")
     public ResponseEntity<ResultListResponse> getCategoriesByProductName(@PathVariable String productName){
         List<ResponseCatalogDto> result = queryCatalogService.getCatalogByProductNames(productName);
         ResultListResponse resultListResponse = ResultListResponse.of(ResultCode.GET_CATALOG_REQUEST_SUCCESS, result);
