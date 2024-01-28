@@ -1,6 +1,5 @@
 package com.ghkdtlwns987.catalog.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ghkdtlwns987.catalog.Dto.RequestCatalogDto;
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
