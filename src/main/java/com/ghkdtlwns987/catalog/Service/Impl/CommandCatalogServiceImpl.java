@@ -16,24 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class CommandCatalogServiceImpl implements CommandCatalogService {
-    private final QueryCatalogRepository queryCatalogRepository;
     private final CommandCatalogRepository commandCatalogRepository;
     @Override
     @Transactional
     public ResponseCatalogDto createCatalog(RequestCatalogDto requestCatalogDto) {
-        if(productIdAlreadyExists(requestCatalogDto)){
-            throw new ProductIdAlreadyExistsException();
-        }
-
         Catalog catalog = requestCatalogDto.toEntity();
         Catalog savedCatalog = commandCatalogRepository.save(catalog);
         return ResponseCatalogDto.fromEntity(savedCatalog);
     }
-    private boolean productIdAlreadyExists(RequestCatalogDto requestCatalogDto){
-        if(queryCatalogRepository.existsCatalogByProductId(requestCatalogDto.getProductId())){
-            return true;
-        }
-        return false;
-    }
-
 }

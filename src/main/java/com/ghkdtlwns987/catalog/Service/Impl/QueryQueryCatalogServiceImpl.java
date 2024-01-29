@@ -21,7 +21,6 @@ public class QueryQueryCatalogServiceImpl implements QueryCatalogService {
     @Override
     public List<ResponseCatalogDto> getAllCatalogs() {
         List<Catalog> catalogList = queryCatalogRepository.findAllCatalogs();
-
         return catalogList.stream()
                 .map(ResponseCatalogDto::fromEntity)
                 .toList();
