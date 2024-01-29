@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class CatalogValication {
+public class CatalogValidation {
     private final QueryCatalogRepository queryCatalogRepository;
 
     @Before("execution(* com.ghkdtlwns987.catalog.Service.Inter.CommandCatalogService.createCatalog(..)) " + "&& args(requestCatalogDto)")

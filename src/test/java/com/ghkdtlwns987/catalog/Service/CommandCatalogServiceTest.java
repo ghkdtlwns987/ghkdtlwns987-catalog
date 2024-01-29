@@ -1,5 +1,6 @@
 package com.ghkdtlwns987.catalog.Service;
 
+import com.ghkdtlwns987.catalog.Aop.CatalogValidation;
 import com.ghkdtlwns987.catalog.Dto.RequestCatalogDto;
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
@@ -31,6 +32,9 @@ public class CommandCatalogServiceTest {
     private CommandCatalogRepository commandCatalogRepository;
     private CommandCatalogServiceImpl commandCatalogService;
 
+    private QueryCatalogRepository queryCatalogRepository;
+    private CatalogValidation catalogValidation;
+
     private final String PRODUCT_ID_1 = "CATALOG-0001";
     private final String PRODUCT_NAME = "Berlin";
     private final Integer QTY = 100;
@@ -52,7 +56,8 @@ public class CommandCatalogServiceTest {
                 .userId(USERID)
                 .build();
 
-
+        queryCatalogRepository = Mockito.mock(QueryCatalogRepository.class);
+        catalogValidation = new CatalogValidation(queryCatalogRepository);
         commandCatalogRepository = Mockito.mock(CommandCatalogRepository.class);
         commandCatalogService = new CommandCatalogServiceImpl(commandCatalogRepository);
     }
@@ -60,14 +65,11 @@ public class CommandCatalogServiceTest {
     @Test
     void catalog_생성_실패_이미_등록된_productId() throws Exception{
         // given
-        when(commandCatalogService.createCatalog(any())).thenThrow(ProductIdAlreadyExistsException.class);
-        commandCatalogService.createCatalog(requestCatalogDto1);
-        commandCatalogService.createCatalog(requestCatalogDto1);
+        when(queryCatalogRepository.existsCatalogByProductId(PRODUCT_ID_1)).thenReturn(true);
 
         // then
         ProductIdAlreadyExistsException error = assertThrows(ProductIdAlreadyExistsException.class,
-                () -> commandCatalogService.createCatalog(requestCatalogDto1));
-
+                () -> catalogValidation.checkProductIdExists(requestCatalogDto1));
         assertThat(error.getErrorCode()).isEqualTo(ErrorCode.PRODUCT_ID_ALREADY_EXISTS);
         verify(commandCatalogRepository, never()).save(any(Catalog.class));
     }
