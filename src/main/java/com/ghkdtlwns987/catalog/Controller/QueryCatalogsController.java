@@ -1,6 +1,9 @@
 package com.ghkdtlwns987.catalog.Controller;
 
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
+import com.ghkdtlwns987.catalog.Global.ResultCode;
+import com.ghkdtlwns987.catalog.Global.ResultListResponse;
+import com.ghkdtlwns987.catalog.Global.ResultResponse;
 import com.ghkdtlwns987.catalog.Service.Inter.QueryCatalogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,22 +19,23 @@ public class QueryCatalogsController {
     private final QueryCatalogService queryCatalogService;
 
     @GetMapping("/catalogs")
-    public ResponseEntity<List<ResponseCatalogDto>> getCategories(){
+    public ResponseEntity<ResultListResponse> getCategories(){
         List<ResponseCatalogDto> result = queryCatalogService.getAllCatalogs();
-
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        ResultListResponse resultListResponse = ResultListResponse.of(ResultCode.GET_CATALOG_REQUEST_SUCCESS, result);
+        return ResponseEntity.status(HttpStatus.OK).body(resultListResponse);
     }
 
-    @PostMapping("/catalogs/{productId}")
-    public ResponseEntity<ResponseCatalogDto> getCategoriesByProductId(@PathVariable String productId){
+    @GetMapping("/catalogs/search")
+    public ResponseEntity<ResultResponse> getCategoriesByProductId(@RequestBody String productId){
         ResponseCatalogDto result = queryCatalogService.getCatalogByProductId(productId);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        ResultResponse resultResponse = ResultResponse.of(ResultCode.GET_CATALOG_REQUEST_SUCCESS, result);
+        return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
     }
 
-    @GetMapping("/catalogs/{productName}")
-    public ResponseEntity<List<ResponseCatalogDto>> getCategoriesByProductName(@PathVariable String productName){
+    @GetMapping("/catalogs/search/{productName}")
+    public ResponseEntity<ResultListResponse> getCategoriesByProductName(@PathVariable String productName){
         List<ResponseCatalogDto> result = queryCatalogService.getCatalogByProductNames(productName);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        ResultListResponse resultListResponse = ResultListResponse.of(ResultCode.GET_CATALOG_REQUEST_SUCCESS, result);
+        return ResponseEntity.status(HttpStatus.OK).body(resultListResponse);
     }
-
 }

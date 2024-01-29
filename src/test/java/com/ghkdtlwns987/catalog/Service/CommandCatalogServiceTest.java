@@ -1,5 +1,6 @@
 package com.ghkdtlwns987.catalog.Service;
 
+import com.ghkdtlwns987.catalog.Aop.CatalogValidation;
 import com.ghkdtlwns987.catalog.Dto.RequestCatalogDto;
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
@@ -17,6 +18,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,14 +29,18 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class CommandCatalogServiceTest {
 
-    private QueryCatalogRepository queryCatalogRepository;
     private CommandCatalogRepository commandCatalogRepository;
     private CommandCatalogServiceImpl commandCatalogService;
+
+    private QueryCatalogRepository queryCatalogRepository;
+    private CatalogValidation catalogValidation;
 
     private final String PRODUCT_ID_1 = "CATALOG-0001";
     private final String PRODUCT_NAME = "Berlin";
     private final Integer QTY = 100;
     private final Integer UNITPRICE = 1500;
+    private final String ORDERID = UUID.randomUUID().toString();
+    private final String USERID = UUID.randomUUID().toString();
 
     Catalog catalog1;
     RequestCatalogDto requestCatalogDto1;
@@ -45,24 +52,25 @@ public class CommandCatalogServiceTest {
                 .productName(PRODUCT_NAME)
                 .qty(QTY)
                 .unitPrice(UNITPRICE)
+                .orderId(ORDERID)
+                .userId(USERID)
                 .build();
 
-        commandCatalogRepository = Mockito.mock(CommandCatalogRepository.class);
         queryCatalogRepository = Mockito.mock(QueryCatalogRepository.class);
-        commandCatalogService = new CommandCatalogServiceImpl(queryCatalogRepository, commandCatalogRepository);
+        catalogValidation = new CatalogValidation(queryCatalogRepository);
+        commandCatalogRepository = Mockito.mock(CommandCatalogRepository.class);
+        commandCatalogService = new CommandCatalogServiceImpl(commandCatalogRepository);
     }
 
     @Test
-    void catalog_생성_실패_이미_등록된_productId() {
+    void catalog_생성_실패_이미_등록된_productId() throws Exception{
         // given
-        doReturn(true).when(queryCatalogRepository).existsCatalogByProductId(PRODUCT_ID_1);
+        when(queryCatalogRepository.existsCatalogByProductId(PRODUCT_ID_1)).thenReturn(true);
 
         // then
         ProductIdAlreadyExistsException error = assertThrows(ProductIdAlreadyExistsException.class,
-                () -> commandCatalogService.createCatalog(requestCatalogDto1));
-
+                () -> catalogValidation.checkProductIdExists(requestCatalogDto1));
         assertThat(error.getErrorCode()).isEqualTo(ErrorCode.PRODUCT_ID_ALREADY_EXISTS);
-
         verify(commandCatalogRepository, never()).save(any(Catalog.class));
     }
 
@@ -77,7 +85,6 @@ public class CommandCatalogServiceTest {
                 .unitPrice(UNITPRICE)
                 .build();
 
-        doReturn(false).when(queryCatalogRepository).existsCatalogByProductId(PRODUCT_ID_1);
         when(commandCatalogRepository.save(any(Catalog.class))).thenReturn(savedCatalog);
 
 
