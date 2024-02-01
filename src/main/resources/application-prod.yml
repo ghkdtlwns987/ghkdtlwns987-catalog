@@ -29,8 +29,6 @@ spring:
         database-platform: org.hibernate.dialect.MariaDB103Dialect
     format_sql: true
     show-sql: true
-    defer-datasource-initialization: true
-
 
   datasource:
     url: jdbc:mariadb://117.16.17.165:13000/test
