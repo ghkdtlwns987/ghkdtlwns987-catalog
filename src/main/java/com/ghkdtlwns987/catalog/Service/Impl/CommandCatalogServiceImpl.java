@@ -5,6 +5,7 @@ import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
 import com.ghkdtlwns987.catalog.Exception.ErrorCode.ErrorCode;
 import com.ghkdtlwns987.catalog.Exception.Exception.ClientException;
+import com.ghkdtlwns987.catalog.Exception.Exception.OutOfStockExceptoin;
 import com.ghkdtlwns987.catalog.Exception.Exception.ProductIdAlreadyExistsException;
 import com.ghkdtlwns987.catalog.Repository.CommandCatalogRepository;
 import com.ghkdtlwns987.catalog.Repository.QueryCatalogRepository;
@@ -20,11 +21,11 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CommandCatalogServiceImpl implements CommandCatalogService {
     private final CommandCatalogRepository commandCatalogRepository;
     private final QueryCatalogRepository queryCatalogRepository;
     @Override
-    @Transactional
     public ResponseCatalogDto createCatalog(RequestCatalogDto requestCatalogDto) {
         Catalog catalog = requestCatalogDto.toEntity();
         Catalog savedCatalog = commandCatalogRepository.save(catalog);
@@ -38,7 +39,12 @@ public class CommandCatalogServiceImpl implements CommandCatalogService {
                         ErrorCode.PRODUCT_ID_NOT_EXISTS,
                         ErrorCode.PRODUCT_ID_NOT_EXISTS.getMessage()
                 ));
-        catalog.updateStock(requestCatalogDto.getQty());
+
+        if(catalog.getStock() < requestCatalogDto.getQty()){
+            throw new OutOfStockExceptoin();
+        }
+        Integer stock = catalog.getStock() - requestCatalogDto.getQty();
+        catalog.updateStock(stock);
         return ResponseCatalogDto.fromEntity(catalog);
     }
 
@@ -61,5 +67,6 @@ public class CommandCatalogServiceImpl implements CommandCatalogService {
                         ErrorCode.PRODUCT_ID_NOT_EXISTS.getMessage()
                 ));
         catalog.updateUnitPrice(requestCatalogDto.getUnitPrice());
-        return ResponseCatalogDto.fromEntity(catalog);       }
+        return ResponseCatalogDto.fromEntity(catalog);
+    }
 }

@@ -23,9 +23,23 @@ public class CommandCatalogController {
         return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
     }
 
-    @PutMapping("/catalogs")
+    @PutMapping("/orders")
     public ResponseEntity<ResultResponse> updateCatalogStock(@RequestBody RequestCatalogDto request) {
         ResponseCatalogDto result = commandCatalogService.updateCatalogStock(request);
+        ResultResponse resultResponse = ResultResponse.of(ResultCode.UPDATE_CATALOG_REQUEST_SUCCESS, result);
+        return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
+    }
+
+    @PutMapping("/price")
+    public ResponseEntity<ResultResponse> updateCatalogPrice(@RequestBody RequestCatalogDto request) {
+        ResponseCatalogDto result = commandCatalogService.updateCatalogUnitPrice(request);
+        ResultResponse resultResponse = ResultResponse.of(ResultCode.UPDATE_CATALOG_REQUEST_SUCCESS, result);
+        return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
+    }
+
+    @PutMapping("/catalogs")
+    public ResponseEntity<ResultResponse> updateCatalogName(@RequestBody RequestCatalogDto request) {
+        ResponseCatalogDto result = commandCatalogService.updateCatalogName(request);
         ResultResponse resultResponse = ResultResponse.of(ResultCode.UPDATE_CATALOG_REQUEST_SUCCESS, result);
         return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
     }

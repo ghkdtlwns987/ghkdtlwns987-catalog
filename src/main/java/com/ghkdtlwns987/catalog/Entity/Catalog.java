@@ -52,7 +52,7 @@ public class Catalog {
      * @param stock
      */
     public void updateStock(Integer stock){
-        this.stock -= stock;
+        this.stock = stock;
     }
 
     /**
