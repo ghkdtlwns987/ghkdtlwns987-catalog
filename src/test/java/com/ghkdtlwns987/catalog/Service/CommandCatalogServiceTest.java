@@ -59,7 +59,7 @@ public class CommandCatalogServiceTest {
         queryCatalogRepository = Mockito.mock(QueryCatalogRepository.class);
         catalogValidation = new CatalogValidation(queryCatalogRepository);
         commandCatalogRepository = Mockito.mock(CommandCatalogRepository.class);
-        commandCatalogService = new CommandCatalogServiceImpl(commandCatalogRepository);
+        commandCatalogService = new CommandCatalogServiceImpl(commandCatalogRepository, queryCatalogRepository);
     }
 
     @Test

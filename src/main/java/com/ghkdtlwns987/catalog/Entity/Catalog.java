@@ -46,4 +46,28 @@ public class Catalog {
         this.stock = stock;
         this.unitPrice = unitPrice;
     }
+
+    /**
+     * 재고 차감
+     * @param stock
+     */
+    public void updateStock(Integer stock){
+        this.stock -= stock;
+    }
+
+    /**
+     * 개당 가격 수정
+     * @param unitPrice
+     */
+    public void updateUnitPrice(Integer unitPrice){
+        this.unitPrice = unitPrice;
+    }
+
+    /**
+     * 상품명 수정
+     * @param productName
+     */
+    public void updateName(String productName){
+        this.productName = productName;
+    }
 }
