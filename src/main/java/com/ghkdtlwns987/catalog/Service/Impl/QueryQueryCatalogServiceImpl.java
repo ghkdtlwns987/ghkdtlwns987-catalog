@@ -39,7 +39,8 @@ public class QueryQueryCatalogServiceImpl implements QueryCatalogService {
         Catalog catalog = queryCatalogRepository.findCatalogByProductId(productId)
                 .orElseThrow(() -> new ClientException(
                         ErrorCode.PRODUCT_ID_NOT_EXISTS,
-                        "ProductId : " + productId
+                        //"ProductId : " + productId
+                        ErrorCode.PRODUCT_ID_NOT_EXISTS.getMessage()
                 ));
         return ResponseCatalogDto.fromEntity(catalog);
     }

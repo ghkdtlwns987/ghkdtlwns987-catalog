@@ -20,7 +20,7 @@ public class CommandCatalogController {
     private final CommandCatalogService commandCatalogService;
 
     @PostMapping("/catalogs")
-    public ResponseEntity<ResultResponse> createCatalog(@RequestBody RequestCatalogDto request) throws Exception{
+    public ResponseEntity<ResultResponse> createCatalog(@RequestBody RequestCatalogDto request) {
         ResponseCatalogDto result = commandCatalogService.createCatalog(request);
         ResultResponse resultResponse = ResultResponse.of(ResultCode.REGISTER_CATALOG_REQUEST_SUCCESS, result);
         return ResponseEntity.status(HttpStatus.OK).body(resultResponse);
