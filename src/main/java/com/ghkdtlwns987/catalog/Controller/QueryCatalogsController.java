@@ -25,8 +25,8 @@ public class QueryCatalogsController {
         return ResponseEntity.status(HttpStatus.OK).body(resultListResponse);
     }
 
-    @GetMapping("/catalogs/search")
-    public ResponseEntity<ResultResponse> getCategoriesByProductId(@RequestBody String productId){
+    @GetMapping("/catalogs/search/Id/{productId}")
+    public ResponseEntity<ResultResponse> getCategoriesByProductId(@PathVariable String productId){
         ResponseCatalogDto result = queryCatalogService.getCatalogByProductId(productId);
         ResultResponse resultResponse = ResultResponse.of(ResultCode.GET_CATALOG_REQUEST_SUCCESS, result);
         return ResponseEntity.status(HttpStatus.OK).body(resultResponse);

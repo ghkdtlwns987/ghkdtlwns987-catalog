@@ -24,6 +24,10 @@ spring:
     username: h2test
     password: h2test
 
+  sql:
+    init:
+      mode: always
+      data-locations: classpath*:data-dev.sql
   # JPA
   jpa:
     generate-ddl: true
@@ -36,6 +40,7 @@ spring:
     format_sql: true
     show-sql: true
     defer-datasource-initialization: true
+
 
 auth:
   authentication:
