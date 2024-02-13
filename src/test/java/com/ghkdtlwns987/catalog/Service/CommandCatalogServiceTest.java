@@ -5,7 +5,7 @@ import com.ghkdtlwns987.catalog.Dto.RequestCatalogDto;
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
 import com.ghkdtlwns987.catalog.Exception.ErrorCode.ErrorCode;
-import com.ghkdtlwns987.catalog.Exception.Exception.ProductIdAlreadyExistsException;
+import com.ghkdtlwns987.catalog.Exception.Exception.ClientException;
 import com.ghkdtlwns987.catalog.Repository.CommandCatalogRepository;
 import com.ghkdtlwns987.catalog.Repository.QueryCatalogRepository;
 import com.ghkdtlwns987.catalog.Service.Impl.CommandCatalogServiceImpl;
@@ -68,7 +68,7 @@ public class CommandCatalogServiceTest {
         when(queryCatalogRepository.existsCatalogByProductId(PRODUCT_ID_1)).thenReturn(true);
 
         // then
-        ProductIdAlreadyExistsException error = assertThrows(ProductIdAlreadyExistsException.class,
+        ClientException error = assertThrows(ClientException.class,
                 () -> catalogValidation.checkProductIdExists(requestCatalogDto1));
         assertThat(error.getErrorCode()).isEqualTo(ErrorCode.PRODUCT_ID_ALREADY_EXISTS);
         verify(commandCatalogRepository, never()).save(any(Catalog.class));

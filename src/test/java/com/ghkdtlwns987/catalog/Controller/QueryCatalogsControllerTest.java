@@ -94,7 +94,7 @@ public class QueryCatalogsControllerTest {
         when(queryCatalogService.getCatalogByProductId(any())).thenReturn(responses);
 
         // when
-        ResultActions perform = mockMvc.perform(get("/api/v1/catalog/catalogs/search")
+        ResultActions perform = mockMvc.perform(get("/api/v1/catalog/catalogs/search/Id/" + invalid_productId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalid_productId))
         );
@@ -109,17 +109,16 @@ public class QueryCatalogsControllerTest {
     }
     @Test
     void productId로_상품_조회_성공() throws Exception {
-        final String invalid_productId = "invalid-product-Id";
         // given
         ResponseCatalogDto responses = responseCatalogDto1;
 
-        queryCatalogService.getCatalogByProductId(invalid_productId);
+        queryCatalogService.getCatalogByProductId(productId1);
         when(queryCatalogService.getCatalogByProductId(any())).thenReturn(responses);
 
         // when
-        ResultActions perform = mockMvc.perform(get("/api/v1/catalog/catalogs/search")
+        ResultActions perform = mockMvc.perform(get("/api/v1/catalog/catalogs/search/Id/" + productId1)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(invalid_productId))
+                .content(objectMapper.writeValueAsString(productId1))
         );
 
         // then

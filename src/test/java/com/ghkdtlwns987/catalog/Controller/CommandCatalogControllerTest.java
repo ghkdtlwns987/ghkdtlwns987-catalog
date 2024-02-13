@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ghkdtlwns987.catalog.Dto.RequestCatalogDto;
 import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
-import com.ghkdtlwns987.catalog.Exception.Exception.ProductIdAlreadyExistsException;
+import com.ghkdtlwns987.catalog.Exception.ErrorCode.ErrorCode;
+import com.ghkdtlwns987.catalog.Exception.Exception.ClientException;
 import com.ghkdtlwns987.catalog.Repository.CommandCatalogRepository;
 import com.ghkdtlwns987.catalog.Repository.QueryCatalogRepository;
 import com.ghkdtlwns987.catalog.Service.Inter.CommandCatalogService;
@@ -88,7 +89,7 @@ public class CommandCatalogControllerTest {
 
         queryCatalogRepository.existsCatalogByProductId(productId1);
         when(queryCatalogRepository.existsCatalogByProductId(any())).thenReturn(true);
-        when(commandCatalogService.createCatalog(any(RequestCatalogDto.class))).thenThrow(new ProductIdAlreadyExistsException());
+        when(commandCatalogService.createCatalog(any(RequestCatalogDto.class))).thenThrow(new ClientException(ErrorCode.PRODUCT_ID_ALREADY_EXISTS, ErrorCode.PRODUCT_ID_ALREADY_EXISTS.getMessage()));
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/v1/catalog/catalogs")
@@ -98,8 +99,7 @@ public class CommandCatalogControllerTest {
 
         // then
         perform.andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.data", equalTo(null)))
-                .andExpect(jsonPath("$.errorMessage[0]", equalTo("PRODUCT ID IS ALREADY EXISTS")))
+                .andExpect(jsonPath("$.message", equalTo(ErrorCode.PRODUCT_ID_ALREADY_EXISTS.getMessage())))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(queryCatalogRepository, times(1)).existsCatalogByProductId(any());
