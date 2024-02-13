@@ -5,8 +5,6 @@ import com.ghkdtlwns987.catalog.Dto.ResponseCatalogDto;
 import com.ghkdtlwns987.catalog.Entity.Catalog;
 import com.ghkdtlwns987.catalog.Exception.ErrorCode.ErrorCode;
 import com.ghkdtlwns987.catalog.Exception.Exception.ClientException;
-import com.ghkdtlwns987.catalog.Exception.Exception.OutOfStockExceptoin;
-import com.ghkdtlwns987.catalog.Exception.Exception.ProductIdAlreadyExistsException;
 import com.ghkdtlwns987.catalog.Repository.CommandCatalogRepository;
 import com.ghkdtlwns987.catalog.Repository.QueryCatalogRepository;
 import com.ghkdtlwns987.catalog.Service.Inter.CommandCatalogService;
@@ -41,7 +39,7 @@ public class CommandCatalogServiceImpl implements CommandCatalogService {
                 ));
 
         if(catalog.getStock() < requestCatalogDto.getQty()){
-            throw new OutOfStockExceptoin();
+            throw new ClientException(ErrorCode.OUT_OF_STOCK, ErrorCode.ORDER_ID_ALREADY_EXISTS.getMessage());
         }
         Integer stock = catalog.getStock() - requestCatalogDto.getQty();
         catalog.updateStock(stock);
