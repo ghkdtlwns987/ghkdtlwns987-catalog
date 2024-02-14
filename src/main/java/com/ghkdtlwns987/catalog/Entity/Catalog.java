@@ -3,6 +3,7 @@ package com.ghkdtlwns987.catalog.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -35,6 +36,7 @@ public class Catalog {
     /* 주문 시간 */
     @Column(name = "orderAt", updatable = false)
     @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime orderAt;
 
 
